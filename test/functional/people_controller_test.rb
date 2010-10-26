@@ -86,6 +86,18 @@ class PeopleControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  def test_should_get_edit_other
+    login_as :student_sam
+    get :edit, :id => users(:faculty_frank).id
+    assert_response :redirect
+    login_as :faculty_frank
+    get :edit, :id => users(:student_sam).id
+    assert_response :success
+    login_as :admin_andy
+    get :edit, :id => users(:student_sam).id
+    assert_response :success
+  end  
+
   def test_should_update_person
     login_as :student_sam
     put :update, :id => users(:student_sam).id, :person => { }
