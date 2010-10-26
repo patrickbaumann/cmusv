@@ -33,3 +33,10 @@ teamTwo:
    name: "FixtureDeming teamTwo"
    course: foundations
    primary_faculty_id: 2
+   
+teamFrancine:
+   id: 1
+   name: "team francine"
+   course: foundations
+   primary_faculty_id: 99
+   secondary_faculty_id: 2
