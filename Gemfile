@@ -16,6 +16,8 @@ gem 'oauth'
 
 gem 'heroku'
 gem 'taps'
+gem 'vestal_versions', '1.0.2'
+gem 'paperclip', '2.3.4'
 
 group :plugins do
   gem 'authlogic'
