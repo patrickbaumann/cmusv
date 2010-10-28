@@ -12,14 +12,14 @@ $(document).ready(function()
          $('#filterBoxOne').removeAttr("disabled");
          $('#filterBoxOne').focus();
         }
-        $("#people_table").tablesorter({widgets: ['zebra'],         
+        /*$("#people_table").tablesorter({widgets: ['zebra'],
                                         headers: {2: {sorter: false}  },
                                         sortList: [[0,0], [1,0]]})
             .tablesorterFilter({ filterContainer: $("#filterBoxOne"),
                 filterClearContainer: $("#filterClearOne"),
                 filterColumns: [0, 1, 3, 4, 5],
                 filterCaseSensitive: false
-            });        
+            }); */
 
         //scroll the message box to the top offset of browser's scrool bar
         $(window).scroll(function()
@@ -77,8 +77,12 @@ function updateImage(uri,label)
 
 <h1>Listing people</h1>
 <div class="right_link" ><%= link_to 'See phone book', :action=>'phone_book' %><br/><%= link_to 'See photo book', :action=>'photo_book' %></div>
-<div style="float:none"><%= render :partial => "tablesorter_filter_box" %><label>Show Students</label><input type="checkbox" id="student_checkbox" onchange="toggleStudents()" value="1" checked="checked" />
-  <label>Show Staff</label><input type="checkbox" id="staff_checkbox" onchange="toggleStaff()" value="1" checked="checked" />
+
+<div style="float:none">
+  <% form_tag(people_path, :method => :get) do %>
+    Search by name: <%= text_field_tag('search', @list_options[:search]) %>
+    <%= submit_tag "Update list" %>
+  <% end %>
 </div>
 
 <div id="image_box">
