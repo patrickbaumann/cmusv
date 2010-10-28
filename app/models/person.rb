@@ -209,4 +209,29 @@ class Person < ActiveRecord::Base
 #     end
 #   end
 
+   named_scope :search, lambda{ |query|
+      q = "%#{query.downcase}%"
+      { :conditions => ['lower(human_name) LIKE ?', q] } }
+
+   # http://clearcove.ca/blog/2008/12/recipe-restful-search-for-rails/
+  # applies list options to retrieve matching records from database
+  def self.filter(list_options)
+    raise(ArgumentError, "Expected Hash, got #{list_options.inspect}") \
+        unless list_options.is_a?(Hash)
+    # compose all filters on AR Collection Proxy
+    ar_proxy = Person
+    list_options.each do |key, value|
+      next unless self.list_option_names.include?(key) # only consider list options
+      next if value.blank? # ignore blank list options
+      ar_proxy = ar_proxy.send(key, value) # compose this option
+    end
+    ar_proxy # return the ActiveRecord proxy object
+  end
+
+   # http://clearcove.ca/blog/2008/12/recipe-restful-search-for-rails/
+  # returns array of valid list option names
+  def self.list_option_names
+    self.scopes.map{|s| s.first} - [:named_scope_that_is_not_a_list_option]
+  end
+
 end
