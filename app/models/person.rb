@@ -209,9 +209,9 @@ class Person < ActiveRecord::Base
 #     end
 #   end
 
-   named_scope :search, lambda{ |query|
+   named_scope :search_organization, lambda{ |query|
       q = "%#{query.downcase}%"
-      { :conditions => ['lower(human_name) LIKE ?', q] } }
+      { :conditions => ['lower(organization_name) LIKE ?', q] } }
 
    # http://clearcove.ca/blog/2008/12/recipe-restful-search-for-rails/
   # applies list options to retrieve matching records from database

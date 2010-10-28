@@ -80,4 +80,14 @@ class PersonTest < ActiveSupport::TestCase
     assert google_user.is_a?(String)
   end
 
+  def test_filter_organization
+    options = {:sorted_by => 'most_recent'}
+    options[Person.scopes.map{|s| s.first}.find("search_organization").first] = "Electronic Arts"
+    people = Person.filter(options).find(:all)
+
+    assert_not_nil people
+    assert_equal 1, people.count
+    assert_equal 2, people[0].id
+  end
+
 end

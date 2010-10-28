@@ -80,7 +80,7 @@ function updateImage(uri,label)
 
 <div style="float:none">
   <% form_tag(people_path, :method => :get) do %>
-    Search by name: <%= text_field_tag('search', @list_options[:search]) %>
+    Search by organization: <%= text_field_tag('search_organization', @list_options[:search_organization]) %>
     <%= submit_tag "Update list" %>
   <% end %>
 </div>
