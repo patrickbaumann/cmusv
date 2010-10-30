@@ -22,7 +22,7 @@ Things to note...
 
 == MfSE - Getting Started for Students
 Students should
-1. If you are using mysql, then create mfse_development schema and user (see below)
+1. If you are using mysql, then create a user, the mfse_development schema and the mfse_test schema (see below)
 1. create a config/database.yml
 1. copy config/morning_glory.mfse.yml to config/morning_glory.yml -- no need to configure
 1. copy config/systems.default.yml to config/systems.yml -- no need to configure
@@ -32,6 +32,11 @@ Students should
 1. bundle install
 1. bundle exec rake db:schema:load
 1. bundle exec rake db:setup (to load the seeds.rb data)
+1. verify your configuration
+   1. script/server
+   1. bundle exec rake test
+   1. bundle exec spec spec
+   1. run the server in debug mode in an IDE.
 
 === DB setup
 According to team Marcadores, this is how you startup mysql. I use the GUI tools myself
