@@ -213,6 +213,9 @@ class Person < ActiveRecord::Base
       q = "%#{query.downcase}%"
       { :conditions => ['lower(organization_name) LIKE ?', q] } }
 
+   named_scope :search_local_near_remote, lambda{ |selections|
+      { :conditions => ['local_near_remote IN (?)', [*selections]] } }
+
    # http://clearcove.ca/blog/2008/12/recipe-restful-search-for-rails/
   # applies list options to retrieve matching records from database
   def self.filter(list_options)

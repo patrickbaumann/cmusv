@@ -75,9 +75,20 @@ class PersonTest < ActiveSupport::TestCase
                    :last_name => "Carnegie",
                  :email => email_address)
     assert normal_user.save()
-    
+
     google_user = normal_user.create_google_email("just4now")
     assert google_user.is_a?(String)
+  end
+
+  def test_filter_local_near_remote
+    options = {:sorted_by => 'most_recent'}
+    options[Person.scopes.map{|s| s.first}.find("search_local_near_remote").first] = ["Local", "Remote"]
+    people = Person.filter(options).find(:all)
+
+    assert_not_nil people
+    assert_equal 2, people.count
+    assert_equal 1, people[0].id
+    assert_equal 2, people[1].id
   end
 
   def test_filter_organization
