@@ -121,6 +121,9 @@ function updateImage(uri,label)
         <% if person.image_uri == '/images/mascot.jpg' %>
         <%= image_tag("/images/mascot.jpg", :width=>"16", :height=>"16")  %>
         <% end %>
+        <% if !(person.tigris.nil? || person.tigris.empty?) %>
+        <%= image_tag("/images/tigris.png", :width=>"16", :height=>"16")  %>
+        <% end %>
         <% if person.graduation_year == Time.now.year.to_s %>
         <%= image_tag("/images/cap.png", :width=>"16", :height=>"16")  %>
         <% end %>
