@@ -4,7 +4,7 @@ class CreateDeliverables < ActiveRecord::Migration
       t.string :title
       t.integer :person_id
       t.integer :team_id
-      t.boolean :individual
+      t.boolean :individual, :default => false
       t.integer :task_number
       t.string :deliverable_file_name
       t.string :deliverable_content_type
@@ -14,6 +14,7 @@ class CreateDeliverables < ActiveRecord::Migration
       t.string :feedback_content_type
       t.integer :feedback_file_size
       t.datetime :feedback_updated_at
+      t.text :comments
       t.timestamps
     end
   end

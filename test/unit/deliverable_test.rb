@@ -63,8 +63,8 @@ class DeliverableTest < ActiveSupport::TestCase
     d.individual = true
     d.save
     
-    assert d.canView?(users(:Faculty_Francine)), "team faculty should be able to view with user object passed"
-    assert d.canView?(2), "team faculty (2) should be able to view with id passed"
+    assert d.canView?(users(:faculty_francine)), "team faculty should be able to view with user object passed"
+    assert d.canView?(99), "team faculty (2) should be able to view with id passed"
   end
 
   def test_faculty_file_response_upload
@@ -87,13 +87,13 @@ class DeliverableTest < ActiveSupport::TestCase
     d.individual = true
     d.save
     assert d.canView?(1), "uploader can view file"
-    assert !d.canView?(2), "uploader can view file"
+    assert !d.canView?(2), "team member cannot view individual file file"
       
     d.individual = false
     d.save
     assert d.canView?(1), "uploader can view file"
     assert d.canView?(2), "team member can view file"
-    assert !d.canView?(2), "non team member can view file"
+    assert !d.canView?(3), "non team member can view file"
   end
     
 end

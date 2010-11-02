@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101026040926) do
+ActiveRecord::Schema.define(:version => 20101102003654) do
 
   create_table "course_numbers", :force => true do |t|
     t.string   "name"
@@ -76,21 +76,22 @@ ActiveRecord::Schema.define(:version => 20101026040926) do
   end
 
   create_table "deliverables", :force => true do |t|
-    t.integer  "person_id"
-    t.integer  "team_id"
-    t.boolean  "individual"
-    t.string   "student_file_file_name"
-    t.string   "student_file_file_content_type"
-    t.integer  "student_file_file_size"
-    t.datetime "student_file_updated_at"
-    t.string   "faculty_file_file_name"
-    t.string   "faculty_file_file_content_type"
-    t.integer  "faculty_file_file_size"
-    t.datetime "faculty_file_updated_at"
-    t.text     "comments"
-    t.integer  "task_number"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+      t.string "title"
+      t.integer "person_id"
+      t.integer "team_id"
+      t.boolean "individual", :default => false
+      t.integer "task_number"
+      t.string "deliverable_file_name"
+      t.string "deliverable_content_type"
+      t.integer "deliverable_file_size"
+      t.datetime "deliverable_updated_at"
+      t.string "feedback_file_name"
+      t.string "feedback_content_type"
+      t.integer "feedback_file_size"
+      t.datetime "feedback_updated_at"
+      t.text "comments"
+      t.datetime "created_at"
+      t.datetime "updated_at"
   end
 
   create_table "effort_log_line_items", :force => true do |t|

@@ -59,7 +59,7 @@ class Team < ActiveRecord::Base
       logger.debug "\nCreating #{new_group}\n"
       google_apps_connection.create_group(new_group, [self.name, "#{self.name} for course #{self.course.name}", "Domain"])
     end
-    self.people.each do |member|
+    self.faculty_franchine.each do |member|
       logger.debug "\nTeams:adding #{member.email}"
       google_apps_connection.add_member_to_group(member.email, new_group)
     end
