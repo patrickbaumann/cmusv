@@ -118,6 +118,9 @@ function updateImage(uri,label)
         <% if current_user.is_staff? || current_user.is_admin? %>
         <%= link_to image_tag("/images/my_teams2.gif", :width=>"16", :height=>"16", :alt=>"My Teams", :title=>"My Teams"), my_teams_path(person.id) %>
         <% end %>
+        <% if person.image_uri == '/images/mascot.jpg' %>
+        <%= image_tag("/images/mascot.jpg", :width=>"16", :height=>"16")  %>
+        <% end %>
     </td>
     <td><%=h person.graduation_year %></td>
     <td><%=h person.masters_program %></td>

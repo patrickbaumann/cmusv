@@ -219,7 +219,19 @@ class Person < ActiveRecord::Base
    named_scope :search_is_part_time, lambda{ |selections|
       { :conditions => ['is_part_time IN (?)', [*selections]] } }
 
-   # http://clearcove.ca/blog/2008/12/recipe-restful-search-for-rails/
+   named_scope :search_location, lambda{ |query|
+      queries = query.split(/[\s,;]/)
+      queries = queries.map{|q| "%#{q.downcase}%"}
+
+      conditions = queries.map{|q|
+        c = "lower(work_city) LIKE '" + q + "' OR "
+        c += "lower(work_state) LIKE '" + q + "' OR "
+        c += "lower(work_country) LIKE '" + q + "'"
+      }.join(" OR ")
+
+      { :conditions => conditions } }
+
+  # http://clearcove.ca/blog/2008/12/recipe-restful-search-for-rails/
   # applies list options to retrieve matching records from database
   def self.filter(list_options)
     raise(ArgumentError, "Expected Hash, got #{list_options.inspect}") \
