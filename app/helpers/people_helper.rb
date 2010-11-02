@@ -7,5 +7,9 @@ def display_location(person)
 
 end
 
+def check_checkbox(options, option)
+  return false if options.nil?
+  return options.include? option
+end
 
 end

@@ -81,11 +81,12 @@ function updateImage(uri,label)
 <div style="float:none">
   <% form_tag(people_path, :method => :get) do %>
     Search by organization: <%= text_field_tag('search_organization', @list_options[:search_organization]) %><br />
-    Local: <%= check_box_tag 'search_local_near_remote[]', 'Local' %>
-    Remote: <%= check_box_tag 'search_local_near_remote[]', 'Remote' %>
-    Near: <%= check_box_tag 'search_local_near_remote[]', 'Near' %><br />
-    Part-time: <%= check_box_tag 'search_is_part_time[]', 't' %>
-    Full-time: <%= check_box_tag 'search_is_part_time[]', 'f' %><br />
+    Local: <%= check_box_tag 'search_local_near_remote[]', 'Local', check_checkbox(@list_options[:search_local_near_remote], 'Local') %>
+    Remote: <%= check_box_tag 'search_local_near_remote[]', 'Remote', check_checkbox(@list_options[:search_local_near_remote], 'Remote') %>
+    Near: <%= check_box_tag 'search_local_near_remote[]', 'Near', check_checkbox(@list_options[:search_local_near_remote], 'Near') %><br />
+    Part-time: <%= check_box_tag 'search_is_part_time[]', 't', check_checkbox(@list_options[:search_is_part_time], 't') %>
+    Full-time: <%= check_box_tag 'search_is_part_time[]', 'f', check_checkbox(@list_options[:search_is_part_time], 'f') %><br />
+    Location: <%= text_field_tag('search_location', @list_options[:search_location]) %><br />
     <%= submit_tag "Update list" %>
   <% end %>
 </div>
