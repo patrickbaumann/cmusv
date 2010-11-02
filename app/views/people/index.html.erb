@@ -80,10 +80,12 @@ function updateImage(uri,label)
 
 <div style="float:none">
   <% form_tag(people_path, :method => :get) do %>
-    Search by organization: <%= text_field_tag('search_organization', @list_options[:search_organization]) %>
+    Search by organization: <%= text_field_tag('search_organization', @list_options[:search_organization]) %><br />
     Local: <%= check_box_tag 'search_local_near_remote[]', 'Local' %>
     Remote: <%= check_box_tag 'search_local_near_remote[]', 'Remote' %>
-    Near: <%= check_box_tag 'search_local_near_remote[]', 'Near' %>
+    Near: <%= check_box_tag 'search_local_near_remote[]', 'Near' %><br />
+    Part-time: <%= check_box_tag 'search_is_part_time[]', 't' %>
+    Full-time: <%= check_box_tag 'search_is_part_time[]', 'f' %><br />
     <%= submit_tag "Update list" %>
   <% end %>
 </div>

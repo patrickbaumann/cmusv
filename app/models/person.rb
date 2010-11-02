@@ -216,6 +216,9 @@ class Person < ActiveRecord::Base
    named_scope :search_local_near_remote, lambda{ |selections|
       { :conditions => ['local_near_remote IN (?)', [*selections]] } }
 
+   named_scope :search_is_part_time, lambda{ |selections|
+      { :conditions => ['is_part_time IN (?)', [*selections]] } }
+
    # http://clearcove.ca/blog/2008/12/recipe-restful-search-for-rails/
   # applies list options to retrieve matching records from database
   def self.filter(list_options)
