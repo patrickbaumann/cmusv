@@ -5,16 +5,16 @@
 <script type="text/javascript">
   $(document).ready(function ()
   {
-    $("#course_year").CascadingDropDown("#course_name", '/courses/years_for_course',
+    $("#search_course_year").CascadingDropDown("#search_course_name", '/courses/years_for_course',
     {
         promptText: '-- Pick a year --'
     });
 
-    $("#course_semester").CascadingDropDown("#course_year", '/courses/semesters_for_course_and_year',
+    $("#search_course_semester").CascadingDropDown("#search_course_year", '/courses/semesters_for_course_and_year',
     {
         promptText: '-- Pick a semester --',
         postData: function() {
-          return { course_name: $("#course_name").val(), course_year: $("#course_year").val() };
+          return { search_course_name: $("#search_course_name").val(), search_course_year: $("#search_course_year").val() };
         }
     });
   })
@@ -108,9 +108,9 @@ function updateImage(uri,label)
     Part-time: <%= check_box_tag 'search_is_part_time[]', 't', check_checkbox(@list_options[:search_is_part_time], 't') %>
     Full-time: <%= check_box_tag 'search_is_part_time[]', 'f', check_checkbox(@list_options[:search_is_part_time], 'f') %><br />
     Location: <%= text_field_tag('search_location', @list_options[:search_location]) %><br />
-    Class: <%= select_tag(:course_name, options_for_select(['-- Pick a course --'] | @course_options.map{|c| c.name})) %>
-    Year: <%= select_tag(:course_year) %>
-    Semester: <%= select_tag(:course_semester) %><br />
+    Course: <%= select_tag(:search_course_name, options_for_select(@course_options, @list_options[:search_course_name])) %>
+    Year: <%= select_tag(:search_course_year, options_for_select(@year_options, @list_options[:search_course_year])) %>
+    Semester: <%= select_tag(:search_course_semester, options_for_select(@semester_options, @list_options[:search_course_semester])) %><br />
     <%= submit_tag "Update list" %>
   <% end %>
 </div>

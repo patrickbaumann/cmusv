@@ -23,9 +23,22 @@ class PeopleController < ApplicationController
 #          @people = Person.find(:all, :conditions => ['is_active = ?', true],  :order => "first_name ASC, last_name ASC")
 #    end
 
-    @course_options = Course.find(:all, :select => 'distinct name')
     @list_options = load_list_options
     @people = Person.filter(@list_options).find(:all)
+
+    @course_options = ['-- Pick a course --'] | Course.find(:all, :select => 'distinct name').map {|c| c.name}
+    @year_options = []
+    @semester_options = []
+
+    course_name = params[:search_course_name]
+    if !course_name.nil?
+      @year_options = ['-- Pick a year --'] | Course.years_for_course(course_name).map {|c| c.year.to_s}
+
+      course_year = params[:search_course_year]
+      if !course_year.nil?
+        @semester_options = ['-- Pick a semester --'] | Course.semesters_for_course_and_year(course_name, course_year).map {|c| c.semester}
+      end
+    end
     
 #    respond_to do |format|
 ##      format.html # index.html.erb

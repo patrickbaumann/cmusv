@@ -231,6 +231,54 @@ class Person < ActiveRecord::Base
 
       { :conditions => conditions } }
 
+   named_scope :search_course_name, lambda{ |course_name|
+     @people = []
+
+     @courses = Course.find_all_by_name(course_name)
+     for @course in @courses
+       for @team in @course.teams
+         for @person in @team.people
+           @people << @person.id
+         end
+       end
+     end
+
+     @people.uniq!
+     
+     { :conditions => ['id IN (?)', [*@people]] } }
+
+   named_scope :search_course_year, lambda{ |course_year|
+     @people = []
+
+     @courses = Course.find_all_by_year(course_year)
+     for @course in @courses
+       for @team in @course.teams
+         for @person in @team.people
+           @people << @person.id
+         end
+       end
+     end
+
+     @people.uniq!
+
+     { :conditions => ['id IN (?)', [*@people]] } }
+
+   named_scope :search_course_semester, lambda{ |course_semester|
+     @people = []
+
+     @courses = Course.find_all_by_semester(course_semester)
+     for @course in @courses
+       for @team in @course.teams
+         for @person in @team.people
+           @people << @person.id
+         end
+       end
+     end
+
+     @people.uniq!
+
+     { :conditions => ['id IN (?)', [*@people]] } }
+
   # http://clearcove.ca/blog/2008/12/recipe-restful-search-for-rails/
   # applies list options to retrieve matching records from database
   def self.filter(list_options)
