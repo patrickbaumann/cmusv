@@ -34,6 +34,7 @@ class DeliverableTest < ActiveSupport::TestCase
     d = Deliverable.new
     d.person_id = 1
     d.deliverable_file_name = "test"
+    d.team_id = teams(:one).id
     d.individual = true
     
     assert d.save, "Should save with team information"
@@ -52,7 +53,7 @@ class DeliverableTest < ActiveSupport::TestCase
     d.deliverable_file_name = "test2"
     d.save
     
-    assert_equal 2, d.versions, "should have two versions after second save"
+    assert_equal 2, d.versions.count, "should have two versions after second save"
   end
   
   def test_faculty_file_view

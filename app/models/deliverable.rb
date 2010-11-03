@@ -7,16 +7,21 @@ class Deliverable < ActiveRecord::Base
   validates_presence_of :team_id
   validates_presence_of :deliverable_file_name
 
+  acts_as_versioned
 
   has_attached_file :deliverable,
       :storage => :s3,
       :s3_credentials => "#{RAILS_ROOT}/config/amazon_s3.yml",
-      :path => "deliverables/:id/:filename/:version"
+      :path => "deliverables/:id/:filename/:version",
+      :keep_old_files => true
   has_attached_file :feedback,
       :storage => :s3,
       :s3_credentials => "#{RAILS_ROOT}/config/amazon_s3.yml",
       :path => "deliverables/feedback/:id/:filename"
 
+  Paperclip.interpolates :version do |deliverable|
+    deliverable.instance.version.to_s
+  end
 
   def canView?(person)
     # let's extract the id of a Person object or convert to an integer if other object type
@@ -28,5 +33,4 @@ class Deliverable < ActiveRecord::Base
     return true if Person.find(pid).is_teacher # is a staff member
     false
   end
-
 end

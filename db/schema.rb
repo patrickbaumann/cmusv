@@ -75,23 +75,47 @@ ActiveRecord::Schema.define(:version => 20101102003654) do
     t.datetime "updated_at"
   end
 
+  create_table "deliverable_versions", :force => true do |t|
+    t.integer  "deliverable_id"
+    t.integer  "version"
+    t.string   "title"
+    t.integer  "person_id"
+    t.integer  "team_id"
+    t.boolean  "individual",               :default => false
+    t.integer  "task_number"
+    t.string   "deliverable_file_name"
+    t.string   "deliverable_content_type"
+    t.integer  "deliverable_file_size"
+    t.datetime "deliverable_updated_at"
+    t.string   "feedback_file_name"
+    t.string   "feedback_content_type"
+    t.integer  "feedback_file_size"
+    t.datetime "feedback_updated_at"
+    t.text     "comments"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "deliverable_versions", ["deliverable_id"], :name => "index_deliverable_versions_on_deliverable_id"
+
   create_table "deliverables", :force => true do |t|
-      t.string "title"
-      t.integer "person_id"
-      t.integer "team_id"
-      t.boolean "individual", :default => false
-      t.integer "task_number"
-      t.string "deliverable_file_name"
-      t.string "deliverable_content_type"
-      t.integer "deliverable_file_size"
-      t.datetime "deliverable_updated_at"
-      t.string "feedback_file_name"
-      t.string "feedback_content_type"
-      t.integer "feedback_file_size"
-      t.datetime "feedback_updated_at"
-      t.text "comments"
-      t.datetime "created_at"
-      t.datetime "updated_at"
+    t.string   "title"
+    t.integer  "person_id"
+    t.integer  "team_id"
+    t.boolean  "individual",               :default => false
+    t.integer  "task_number"
+    t.string   "deliverable_file_name"
+    t.string   "deliverable_content_type"
+    t.integer  "deliverable_file_size"
+    t.datetime "deliverable_updated_at"
+    t.string   "feedback_file_name"
+    t.string   "feedback_content_type"
+    t.integer  "feedback_file_size"
+    t.datetime "feedback_updated_at"
+    t.text     "comments"
+    t.integer  "version"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "effort_log_line_items", :force => true do |t|
