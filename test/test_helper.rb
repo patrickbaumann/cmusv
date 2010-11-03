@@ -59,6 +59,8 @@ class ActionController::TestCase
     end
   end
 
-
+  def sample_file(filename = "testfile.png")
+    File.new("#{RAILS_ROOT}/test/fixtures/#{filename}")
+  end
 
 end

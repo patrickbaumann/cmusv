@@ -19,8 +19,8 @@ class Deliverable < ActiveRecord::Base
       :s3_credentials => "#{RAILS_ROOT}/config/amazon_s3.yml",
       :path => "deliverables/feedback/:id/:filename"
 
-  Paperclip.interpolates :version do |deliverable|
-    deliverable.instance.version.to_s
+  Paperclip.interpolates :version do |d,f|
+    d.instance.version.to_s
   end
 
   def canView?(person)
