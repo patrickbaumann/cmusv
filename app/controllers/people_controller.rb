@@ -23,6 +23,7 @@ class PeopleController < ApplicationController
 #          @people = Person.find(:all, :conditions => ['is_active = ?', true],  :order => "first_name ASC, last_name ASC")
 #    end
 
+    @course_options = Course.find(:all, :select => 'distinct name')
     @list_options = load_list_options
     @people = Person.filter(@list_options).find(:all)
     
