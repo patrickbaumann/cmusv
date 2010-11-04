@@ -33,4 +33,16 @@ class Deliverable < ActiveRecord::Base
     return true if Person.find(pid).is_teacher # is a staff member
     false
   end
+
+  def title
+    return read_attribute(:title) if not read_attribute(:title).nil?
+    #return nil if !person or !team
+    if individual
+      out = "#{person.first_name}_#{person.last_name}"
+    else
+      out = "#{team.name}"
+    end
+    out += "_#{team.course.name}#{task_number ? "_task_#{task_number}" : ""}_#{deliverable_file_name}"
+    return out
+  end
 end

@@ -1,0 +1,36 @@
+<% content_for :title, 'All deliverables' %>
+<h1>All deliverables</h1>
+<table id="deliverables_table">
+  <thead>
+    <tr>
+    <th>Title</th>
+    <th>Task Number</th>
+    <th>Course</th>
+    <th>Team</th>
+    <% if current_user %>
+    <th>&nbsp;</th>
+    <th>&nbsp;</th>
+    <% end %>
+  </tr>
+  </thead>
+  <tbody>
+<% for deliverable in @deliverables %>
+   <tr class="tablesorter">
+    <td><%=h deliverable.title  %></td>
+    <td><%=h deliverable.task_number %></td>
+    <td><%=h deliverable.team.course.name %></td>
+    <td><%= ( deliverable.individual ? "<i>Individual</i>" : h(deliverable.team.name) ) %></td>
+    <% if current_user %>
+    <td><%= link_to 'Show', deliverable %></td>
+    <td><%= link_to 'Edit', edit_deliverable_path(deliverable) %></td>
+    <% end %>
+  </tr>
+<% end %>
+</tbody>
+</table>
+
+<br />
+
+<% if current_user %>
+<%= link_to 'New deliverable', new_deliverable_path %>
+<% end %>

@@ -1,0 +1,34 @@
+<% content_for :title, @deliverable.title %>
+<p>
+  <b>Name:</b>
+  <%=h @deliverable.title %>
+</p>
+
+<p>
+  <b>File:</b>
+  <%=link_to(@deliverable.deliverable_file_name, @deliverable.deliverable.url)%>
+</p>
+
+<p>
+  <b>Task Number:</b>
+  <%=(@deliverable.task_number ? h(@deliverable.task_number) : "<i>Not provided</i>")%>
+</p>
+
+<p>
+  <b>Team:</b>
+  <%=h @deliverable.team.name %>  <%=h @deliverable.team.course.year %>  <%=h @deliverable.team.course.mini %>
+</p>
+
+<p>
+  <b>Faculty:</b>
+  <%=h @deliverable.team.primary_faculty.human_name %>
+</p>
+
+<p>
+  <b>Comments:</b>
+  <%=(@deliverable.comments ? simple_format(@deliverable.comments) : "<i>None</i>") %>
+</p>
+
+<br><br>
+<%= link_to 'Edit', edit_deliverable_path(@deliverable) %> |
+<%= link_to 'Back', deliverables_path %>

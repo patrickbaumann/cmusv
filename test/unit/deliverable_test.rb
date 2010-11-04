@@ -96,5 +96,28 @@ class DeliverableTest < ActiveSupport::TestCase
     assert d.canView?(2), "team member can view file"
     assert !d.canView?(3), "non team member can view file"
   end
+
+  def test_auto_title
+    d = Deliverable.new
+    d.person_id = 1
+    d.deliverable_file_name = "test"
+    d.team_id = teams(:teamOne)
+    d.individual = true
+    d.save
+    assert_equal "Mr._quentin_Foundations of Software Engineering_test", d.title
+
+    d.individual = false
+    d.save
+    assert_equal "team francine_Foundations of Software Engineering_test", d.title
+
+    d.task_number = 5
+    d.save
+    assert_equal "team francine_Foundations of Software Engineering_task_5_test", d.title
+
+    d.title = "testing!"
+    d.save
+
+    assert_equal "testing!", d.title
+  end
     
 end

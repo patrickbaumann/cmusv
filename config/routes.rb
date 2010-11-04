@@ -65,7 +65,7 @@ ActionController::Routing::Routes.draw do |map|
 #   page.concept_for_b_view  '/concept_for_b_view', :action => 'all'
 # end  
   map.teams '/teams', :controller => 'teams', :action => 'index_all'
-  map.resources :deliverables, :except => :delete, :path_prefix => "/teams/:team_id"    
+  map.resources :deliverables, :except => :delete
 
   
   map.resources :users

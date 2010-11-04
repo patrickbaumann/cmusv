@@ -33,12 +33,12 @@ class DeliverablesControllerTest < ActionController::TestCase
     login_as :student_sam
     get :new, :team_id => 1
     assert_response :success
+    assert_not_nil assigns(:teams)
   end
 
   def test_should_create_deliverable
     login_as :student_sam
     assert_difference('Deliverable.count') { post :create,
-                                                  :team_id => 1,
                                                   :deliverable => {
                                                           :person_id => users(:student_anooj).id,
                                                           :team_id => 1,
@@ -46,7 +46,7 @@ class DeliverablesControllerTest < ActionController::TestCase
                                                           :deliverable => sample_file("testfile.png")
                                                   } }
 
-    assert_redirected_to deliverable_path(1,assigns(:deliverable).id)
+    assert_redirected_to deliverable_path(assigns(:deliverable))
   end
 
   def test_should_show_deliverable
@@ -64,13 +64,13 @@ class DeliverablesControllerTest < ActionController::TestCase
   def test_should_update_deliverable
     login_as :student_sam
     put :update, :id => deliverables(:one).id, :deliverable => { :individual => false }
-    assert_redirected_to deliverable_path(1, assigns(:deliverable).id)
+    assert_redirected_to deliverable_path(assigns(:deliverable))
   end
 
   def test_should_update_deliverable_with_feedback
     login_as :faculty_francine
     put :update, :id => deliverables(:one).id, :deliverable => { :feedback => sample_file("testfile2.png") }
-    assert_redirected_to deliverable_path(1, assigns(:deliverable).id)
+    assert_redirected_to deliverable_path(assigns(:deliverable))
   end
 
 

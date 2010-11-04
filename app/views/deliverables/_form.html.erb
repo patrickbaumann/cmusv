@@ -1,0 +1,29 @@
+<% form_for(deliverable, :html => { :multipart => true }) do |f| %>
+    <%= f.error_messages %>
+  <%= f.hidden_field :person_id %>
+  <p>
+    <%= f.label :title%><br />
+    <%= f.text_field :title %>
+  </p>
+    <p>
+      <%= f.label :team_id, "Course" %>
+      <%= select("deliverable", "team_id", @teams_courses_select)%>
+    </p>
+    <p>
+      <%= f.label :task_number, "Task Number" %>
+      <%= select("deliverable", "task_number", (1..20).to_a , {:include_blank => "None"}) %>
+    </p>
+    <p>
+      <%= f.label :comments%><br/>
+      <%= f.text_area :comments%> 
+    </p>
+    <p>
+      <%= f.label :deliverable%><br/>
+      <%= f.file_field :deliverable%>
+    </p>
+
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+

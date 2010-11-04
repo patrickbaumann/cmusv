@@ -119,6 +119,22 @@ Factory.define :team_triumphant, :class => Team do |t|
  t.person_name3 "Charlie Moss"
 end
 
+Factory.define :patrick, :parent => :person  do |p|
+  p.persistence_token Time.now.to_f.to_s + rand(100).to_s
+  p.first_name "Patrick"
+  p.last_name "Baumann"
+  p.human_name "Patrick Baumann"
+  p.email "patrick.baumann@sv.cmu.edu"
+  p.is_student 1
+end
+Factory.define :anooj, :parent => :person  do |p|
+  p.persistence_token Time.now.to_f.to_s + rand(100).to_s
+  p.first_name "Anooj"
+  p.last_name "Vagadia"
+  p.human_name "Anooj Vagadia"
+  p.email "anooj.vagadia@sv.cmu.edu"
+  p.is_student 1
+end
 
 
 Factory.create(:todd)
@@ -129,6 +145,8 @@ Factory.create(:howard)
 Factory.create(:awe_smith)
 Factory.create(:betty_ross)
 Factory.create(:charlie_moss)
+Factory.create(:patrick)
+Factory.create(:anooj)
 
 architecture = Factory.create(:architecture)
 

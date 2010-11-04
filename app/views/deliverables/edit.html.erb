@@ -1,0 +1,7 @@
+<% content_for :title, 'Edit Deliverable - ' + @deliverable.title %>
+<h1>Editing deliverable</h1>
+
+<%=render :partial => "form", :locals => {:deliverable => @deliverable}  %>
+
+<%= link_to 'Show', @deliverable %> |
+<%= link_to 'Back', deliverables_path %>
