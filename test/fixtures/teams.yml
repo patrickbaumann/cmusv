@@ -7,12 +7,14 @@
 #   column: value
 #
 one:
+  id: 1
   name: Team Alpha
   course: foundations
   twiki_space: http://something.com
   tigris_space: http://something.com
 
 empty_team:
+  id: 2
   name: NULL
   twiki_space: NULL
   email: NULL
@@ -24,12 +26,14 @@ empty_team:
   secondary_faculty_id: NULL
 
 teamOne:
+   id: 3
    name: "FixtureDeming teamOne"
    course: foundations
    primary_faculty_id: 2
    email: something@sandbox.sv.cmu.edu
 
 teamTwo:
+   id: 4
    name: "FixtureDeming teamTwo"
    course: foundations
    primary_faculty_id: 2
