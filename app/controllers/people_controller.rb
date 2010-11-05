@@ -151,12 +151,16 @@ class PeopleController < ApplicationController
 
   # GET /people/1/edit
   def edit
-#    if !(current_user.is_admin? || current_user.is_staff?)
-#      flash[:error] = "You don't have permission to do this action."
-#      redirect_to(people_url) and return
-#    end
-
     @person = Person.find(params[:id])
+
+    if !(current_user.is_admin?)
+      if !(@person.id == current_user.id)
+        if !(current_user.is_teacher? && @person.is_student?)
+          flash[:error] = "You don't have permission to do this action."
+          redirect_to(people_url) and return
+        end
+      end
+    end
   end
 
   # POST /people
