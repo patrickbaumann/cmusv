@@ -52,7 +52,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :effort_reports
 
   map.connect '/people/phone_book', :controller => 'people', :action => 'phone_book'
-  map.connect '/people/photo_book', :controller => 'people', :action => 'photo_book'
+  map.photo_book '/people/photo_book', :controller => 'people', :action => 'photo_book'
   map.my_teams '/people/:id/my_teams', :controller => 'people', :action => 'my_teams'
   map.resources :people
 

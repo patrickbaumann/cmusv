@@ -1,24 +1,7 @@
 <% content_for :title, 'People' %>
 
 <% content_for :cascadingDropDown do %>
-  <%= javascript_include_tag 'jquery.cascadingDropDown'%>
-<script type="text/javascript">
-  $(document).ready(function ()
-  {
-    $("#search_course_year").CascadingDropDown("#search_course_name", '/courses/years_for_course',
-    {
-        promptText: '-- Pick a year --'
-    });
-
-    $("#search_course_semester").CascadingDropDown("#search_course_year", '/courses/semesters_for_course_and_year',
-    {
-        promptText: '-- Pick a semester --',
-        postData: function() {
-          return { search_course_name: $("#search_course_name").val(), search_course_year: $("#search_course_year").val() };
-        }
-    });
-  })
-</script>
+<%= render :partial => "course_dropdown_js" %>
 <% end %>
 
 <% content_for :tablesorter do %>
@@ -127,9 +110,7 @@ function updateImage(uri,label)
     Active: <%= check_box_tag 'search_person_status[]', 'Active', check_checkbox(@list_options[:search_person_status], 'Active') %>
     Inactive: <%= check_box_tag 'search_person_status[]', 'Inactive', check_checkbox(@list_options[:search_person_status], 'Inactive') %><br />
     Location: <%= text_field_tag('search_location', @list_options[:search_location]) %><br />
-    Course: <%= select_tag(:search_course_name, options_for_select(@course_options, @list_options[:search_course_name]), :include_blank => "-- Select a course --") %>
-    Year: <%= select_tag(:search_course_year, options_for_select(@year_options, @list_options[:search_course_year])) %>
-    Semester: <%= select_tag(:search_course_semester, options_for_select(@semester_options, @list_options[:search_course_semester])) %><br />
+    <%= render :partial => "course_dropdown" %>
     <%= submit_tag "Update list" %>
   <% end %>
 </div>

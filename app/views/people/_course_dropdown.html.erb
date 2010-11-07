@@ -1,0 +1,3 @@
+Course: <%= select_tag(:search_course_name, options_for_select(@course_options, @list_options[:search_course_name])) %>
+Year: <%= select_tag(:search_course_year, options_for_select(@year_options, @list_options[:search_course_year])) %>
+Semester: <%= select_tag(:search_course_semester, options_for_select(@semester_options, @list_options[:search_course_semester])) %><br />

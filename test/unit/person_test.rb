@@ -182,5 +182,4 @@ class PersonTest < ActiveSupport::TestCase
     people = Person.filter({:search_person_type => ["Faculty"]}).find(:all)
      assert_equal Person.count(:conditions => {:is_teacher => true}), people.count
   end
-
 end
