@@ -12,7 +12,7 @@ class Deliverable < ActiveRecord::Base
   has_attached_file :deliverable,
       :storage => :s3,
       :s3_credentials => "#{RAILS_ROOT}/config/amazon_s3.yml",
-      :path => "deliverables/:id/:filename/:version",
+      :path => "deliverables/:id/:filename", #/:version",
       :keep_old_files => true
   has_attached_file :feedback,
       :storage => :s3,
@@ -22,7 +22,7 @@ class Deliverable < ActiveRecord::Base
   Paperclip.interpolates :version do |d,f|
     d.instance.version.to_s
   end
-
+  
   def canView?(person)
     # let's extract the id of a Person object or convert to an integer if other object type
     pid = (person.class == Person or person.class == User) ? person.id : person.to_i

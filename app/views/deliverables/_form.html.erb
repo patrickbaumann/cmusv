@@ -17,10 +17,21 @@
       <%= f.label :comments%><br/>
       <%= f.text_area :comments%> 
     </p>
+
+
+    <% if @current_user.is_teacher %>
     <p>
+      <%= "Feedback #{deliverable.feedback_file_name} is currently attached." if deliverable.feedback%><br/>
+      <%= f.label :feedback%><br/>
+      <%= f.file_field :feedback%>
+    </p>
+    <% elsif @current_user.is_student %>
+    <p>
+      <%= "Deliverable #{deliverable.deliverable_file_name} is currently attached." if deliverable.deliverable%><br/>
       <%= f.label :deliverable%><br/>
       <%= f.file_field :deliverable%>
     </p>
+    <% end %>
 
   <p>
     <%= f.submit "Update" %>

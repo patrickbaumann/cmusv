@@ -25,10 +25,19 @@
 </p>
 
 <p>
+  <b>Feedback:</b>
+  <% if @deliverable.feedback %>
+     <%=link_to(@deliverable.feedback_file_name, @deliverable.feedback.url)%>
+  <% else %>
+     <i>Feedback has not been provided at this time.</i>
+  <% end %>
+</p>
+
+<p>
   <b>Comments:</b>
   <%=(@deliverable.comments ? simple_format(@deliverable.comments) : "<i>None</i>") %>
 </p>
 
 <br><br>
-<%= link_to 'Edit', edit_deliverable_path(@deliverable) %> |
+<%= link_to 'Edit', edit_deliverable_path(@deliverable) if @deliverable.canView?(@current_user) %> |
 <%= link_to 'Back', deliverables_path %>

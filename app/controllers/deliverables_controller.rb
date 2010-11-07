@@ -20,9 +20,11 @@ class DeliverablesController < ApplicationController
   def show
     @deliverable = Deliverable.find(params[:id])
 
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @deliverable }
+    if(verify_permissions(@deliverable))
+      respond_to do |format|
+        format.html # show.html.erb
+        format.xml  { render :xml => @deliverable }
+      end
     end
   end
 
@@ -45,6 +47,7 @@ class DeliverablesController < ApplicationController
     @deliverable = Deliverable.find(params[:id])
     @teams = current_person.teams
     @teams_courses_select = teams_courses_select(@teams)
+    verify_permissions(@deliverable)
   end
 
   # POST /deliverable
@@ -56,6 +59,7 @@ class DeliverablesController < ApplicationController
     respond_to do |format|
       if @deliverable.save
         flash[:notice] = 'Deliverable was successfully created.'
+        DeliverableMailer.update_professor(@deliverable)
         format.html { redirect_to(@deliverable) }
         format.xml  { render :xml => @deliverable, :status => :created, :location => @deliverable }
       else
@@ -71,15 +75,17 @@ class DeliverablesController < ApplicationController
     @deliverable = Deliverable.find(params[:id])
     @teams = current_person.teams
     @teams_courses_select = teams_courses_select(@teams)
-    
-    respond_to do |format|
-      if @deliverable.update_attributes(params[:deliverable])
-        flash[:notice] = 'Deliverable was successfully updated.'
-        format.html { redirect_to(@deliverable) }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @deliverable.errors, :status => :unprocessable_entity }
+
+    if(verify_permissions(@deliverable))
+      respond_to do |format|
+        if @deliverable.update_attributes(params[:deliverable])
+          flash[:notice] = 'Deliverable was successfully updated.'
+          format.html { redirect_to(@deliverable) }
+          format.xml  { head :ok }
+        else
+          format.html { render :action => "edit" }
+          format.xml  { render :xml => @deliverable.errors, :status => :unprocessable_entity }
+        end
       end
     end
   end
@@ -92,4 +98,13 @@ private
     end
   end
 
+  def verify_permissions(deliverable)
+    if(deliverable.canView?(@current_user))
+      true
+    else
+      flash[:notice] = 'You do not have the permissions to view that deliverable.'
+      redirect_to(deliverables_path)
+      false
+    end
+  end
 end

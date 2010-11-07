@@ -49,6 +49,19 @@ class DeliverablesControllerTest < ActionController::TestCase
     assert_redirected_to deliverable_path(assigns(:deliverable))
   end
 
+  def test_should_attach_feedback
+    login_as :faculty_francine
+    d = deliverables(:one)
+
+    post :update,
+        :deliverable => {
+                :feedback => sample_file("testfile.png")
+        }
+
+    assert_redirected_to deliverable_path(assigns(:deliverable))
+    assert_equal Deliverable.find(d.id).feedback_file_name, "testfile.png"
+  end
+
   def test_should_show_deliverable
     login_as :student_sam
     get :show, :id => deliverables(:one).id
