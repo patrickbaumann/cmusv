@@ -162,5 +162,25 @@ class PersonTest < ActiveSupport::TestCase
      assert_equal Person.count(:conditions => {:is_active => false}), people.count
   end
 
+  def test_filter_grad_prog
+    people = Person.filter({:search_grad_prog => "Tech"}).find(:all)
+    assert_equal Person.count(:conditions => {:masters_program => "Tech"}), people.count
+  end
+
+  def test_filter_grad_year
+    people = Person.filter({:search_grad_year => "2021"}).find(:all)
+    assert_equal Person.count(:conditions => {:graduation_year => "2021"}), people.count
+  end
+
+  def test_filter_person_type
+    people = Person.filter({:search_person_type => ["Student", "Faculty", "Everyone Else"]}).find(:all)
+    assert_equal Person.count, people.count
+
+    people = Person.filter({:search_person_type => ["Student"]}).find(:all)
+     assert_equal Person.count(:conditions => {:is_student => true}), people.count
+
+    people = Person.filter({:search_person_type => ["Faculty"]}).find(:all)
+     assert_equal Person.count(:conditions => {:is_teacher => true}), people.count
+  end
 
 end

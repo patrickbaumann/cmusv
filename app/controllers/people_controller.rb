@@ -25,6 +25,7 @@ class PeopleController < ApplicationController
 
     if not params["commit"].nil?
       @advanced = true
+      @filter = params["filter"]
     end
 
     @list_options = load_list_options

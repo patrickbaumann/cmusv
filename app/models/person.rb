@@ -213,6 +213,12 @@ class Person < ActiveRecord::Base
       q = "%#{query.downcase}%"
       { :conditions => ['lower(organization_name) LIKE ?', q] } }
 
+  named_scope :search_grad_prog, lambda{ |query|
+     { :conditions => ['lower(masters_program) LIKE ?', query.downcase] } }
+
+  named_scope :search_grad_year, lambda{ |query|
+     { :conditions => {:graduation_year => query.to_s} } }
+
    named_scope :search_local_near_remote, lambda{ |selections|
       { :conditions => ['local_near_remote IN (?)', [*selections]] } }
 
@@ -288,6 +294,30 @@ class Person < ActiveRecord::Base
         {:conditions => {:is_active => false}}
       end
     }
+
+    named_scope :search_person_type, lambda{ |person_type|
+      if person_type.size == 3
+        {:conditions => {}}
+      else
+        conditions = []
+        values = []
+        if(person_type.include? "Faculty")
+          conditions << "is_teacher = ?"
+          values << true
+        end
+       if(person_type.include? "Student")
+         conditions << "is_student = ?"
+         values << true
+       end
+       if(person_type.include? "Everyone Else")
+         conditions << "(is_student = ? AND is_faculty = ?)"
+         values << false
+         values << false
+       end
+       {:conditions => [conditions.join(" OR ")] + values}
+      end
+    }
+
 
   # http://clearcove.ca/blog/2008/12/recipe-restful-search-for-rails/
   # applies list options to retrieve matching records from database

@@ -75,6 +75,12 @@ $(document).ready(function () {
 });
 <% end %>
 
+$(document).ready(function () {
+    $("input[name='commit']").click(function() {
+        $("name='filter'").val($("#filterBoxOne").val());
+    });
+    $("#filterBoxOne").val($("name='filter'").val());
+});
 function toggleStudents()
 {
   /* we don't use .toggle since the state may be inaccurate from a page reload */
@@ -109,12 +115,9 @@ function updateImage(uri,label)
 <h1>Listing people</h1>
 <div class="right_link" ><%= link_to 'See phone book', :action=>'phone_book' %><br/><%= link_to 'See photo book', :action=>'photo_book' %></div>
 
-<div style="float:none" id="basic_search"><%= render :partial => "tablesorter_filter_box" %><label>Show Students</label><input type="checkbox" id="student_checkbox" onchange="toggleStudents()" value="1" checked="checked" />
-  <label>Show Staff</label><input type="checkbox" id="staff_checkbox" onchange="toggleStaff()" value="1" checked="checked" />
-</div>
-
 <div style="float:none" id="advanced_search" name="advanced_search" >
   <% form_tag(people_path, :method => :get) do %>
+    <%= hidden_field_tag "filter", @filter %>
     Search by organization: <%= text_field_tag('search_organization', @list_options[:search_organization]) %><br />
     Local: <%= check_box_tag 'search_local_near_remote[]', 'Local', check_checkbox(@list_options[:search_local_near_remote], 'Local') %>
     Remote: <%= check_box_tag 'search_local_near_remote[]', 'Remote', check_checkbox(@list_options[:search_local_near_remote], 'Remote') %>
@@ -129,6 +132,12 @@ function updateImage(uri,label)
     Semester: <%= select_tag(:search_course_semester, options_for_select(@semester_options, @list_options[:search_course_semester])) %><br />
     <%= submit_tag "Update list" %>
   <% end %>
+</div>
+
+<div style="float:none" id="basic_search">
+  <%= render :partial => "tablesorter_filter_box" %>
+  <label>Show Students</label><input type="checkbox" id="student_checkbox" onchange="toggleStudents()" value="1" checked="checked" />
+  <label>Show Staff</label><input type="checkbox" id="staff_checkbox" onchange="toggleStaff()" value="1" checked="checked" />
 </div>
 
 <div id="image_box">
