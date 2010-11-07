@@ -13,6 +13,7 @@ quentin:
   work_city:                 Albuquerque
   work_state:                New Mexico
   work_country:              United States
+  is_active:                 f
 
 aaron:
   id:                        2

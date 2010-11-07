@@ -151,4 +151,16 @@ class PersonTest < ActiveSupport::TestCase
     assert_equal 4, people.count
   end
 
+  def test_filter_person_status
+    people = Person.filter({:search_person_status => ["Active", "Inactive"]}).find(:all)
+    assert_equal Person.count, people.count
+
+    people = Person.filter({:search_person_status => ["Active"]}).find(:all)
+     assert_equal Person.count(:conditions => {:is_active => true}), people.count
+
+    people = Person.filter({:search_person_status => ["Inactive"]}).find(:all)
+     assert_equal Person.count(:conditions => {:is_active => false}), people.count
+  end
+
+
 end

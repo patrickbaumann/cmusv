@@ -228,7 +228,6 @@ class Person < ActiveRecord::Base
         c += "lower(work_state) LIKE '" + q + "' OR "
         c += "lower(work_country) LIKE '" + q + "'"
       }.join(" OR ")
-
       { :conditions => conditions } }
 
    named_scope :search_course_name, lambda{ |course_name|
@@ -278,6 +277,17 @@ class Person < ActiveRecord::Base
      @people.uniq!
 
      { :conditions => ['id IN (?)', [*@people]] } }
+
+    named_scope :search_person_status, lambda{ |is_active|
+      if is_active.size == 2
+        # if both Active and Inactive have been provided, do not query on is_active
+        {:conditions => {}}
+      elsif(is_active.include? "Active")
+        {:conditions => {:is_active => true}}
+      elsif(is_active.include? "Inactive")
+        {:conditions => {:is_active => false}}
+      end
+    }
 
   # http://clearcove.ca/blog/2008/12/recipe-restful-search-for-rails/
   # applies list options to retrieve matching records from database

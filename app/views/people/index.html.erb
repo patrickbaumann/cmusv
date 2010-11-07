@@ -27,20 +27,20 @@
 <script type="text/javascript">
 $(document).ready(function() 
     {
-       if ($("#filterBoxOne").attr("disabled") == true)
+       /*if ($("#filterBoxOne").attr("disabled") == true)
        {
          $('#filterBoxOne').val('');
          $('#filterBoxOne').removeAttr("disabled");
          $('#filterBoxOne').focus();
-        }
-        /*$("#people_table").tablesorter({widgets: ['zebra'],
+        } */
+        $("#people_table").tablesorter({widgets: ['zebra'],
                                         headers: {2: {sorter: false}  },
                                         sortList: [[0,0], [1,0]]})
-            .tablesorterFilter({ filterContainer: $("#filterBoxOne"),
+            /*.tablesorterFilter({ filterContainer: $("#filterBoxOne"),
                 filterClearContainer: $("#filterClearOne"),
                 filterColumns: [0, 1, 3, 4, 5],
                 filterCaseSensitive: false
-            }); */
+            })*/; 
 
         //scroll the message box to the top offset of browser's scrool bar
         $(window).scroll(function()
@@ -107,8 +107,10 @@ function updateImage(uri,label)
     Near: <%= check_box_tag 'search_local_near_remote[]', 'Near', check_checkbox(@list_options[:search_local_near_remote], 'Near') %><br />
     Part-time: <%= check_box_tag 'search_is_part_time[]', 't', check_checkbox(@list_options[:search_is_part_time], 't') %>
     Full-time: <%= check_box_tag 'search_is_part_time[]', 'f', check_checkbox(@list_options[:search_is_part_time], 'f') %><br />
+    Active: <%= check_box_tag 'search_person_status[]', 'Active', check_checkbox(@list_options[:search_person_status], 'Active') %>
+    Inactive: <%= check_box_tag 'search_person_status[]', 'Inactive', check_checkbox(@list_options[:search_person_status], 'Inactive') %><br />
     Location: <%= text_field_tag('search_location', @list_options[:search_location]) %><br />
-    Course: <%= select_tag(:search_course_name, options_for_select(@course_options, @list_options[:search_course_name])) %>
+    Course: <%= select_tag(:search_course_name, options_for_select(@course_options, @list_options[:search_course_name]), :include_blank => "-- Select a course --") %>
     Year: <%= select_tag(:search_course_year, options_for_select(@year_options, @list_options[:search_course_year])) %>
     Semester: <%= select_tag(:search_course_semester, options_for_select(@semester_options, @list_options[:search_course_semester])) %><br />
     <%= submit_tag "Update list" %>

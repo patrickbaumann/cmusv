@@ -26,19 +26,28 @@ class PeopleController < ApplicationController
     @list_options = load_list_options
     @people = Person.filter(@list_options).find(:all)
 
-    @course_options = ['-- Pick a course --'] | Course.find(:all, :select => 'distinct name').map {|c| c.name}
+    if @list_options[:search_person_status].nil?
+      @list_options[:search_person_status] = ["Active"]
+    end
+
+    @course_options = [["-- Select a course --", nil]]
+    @course_options += Course.find(:all, :select => 'distinct name').map {|c| [c.name, c.name]}
     @year_options = []
     @semester_options = []
 
     course_name = params[:search_course_name]
     if !course_name.nil?
-      @year_options = ['-- Pick a year --'] | Course.years_for_course(course_name).map {|c| c.year.to_s}
+      @year_options = [["-- Select a year --", nil]]
+      @year_options += Course.years_for_course(course_name).map {|c| [c.year.to_s, c.year.to_s]}
 
       course_year = params[:search_course_year]
       if !course_year.nil?
-        @semester_options = ['-- Pick a semester --'] | Course.semesters_for_course_and_year(course_name, course_year).map {|c| c.semester}
+        @semester_options = [["-- Select a semester -- ", nil]]
+        @semester_options = Course.semesters_for_course_and_year(course_name, course_year).map {|c| c.semester}
       end
     end
+
+
     
 #    respond_to do |format|
 ##      format.html # index.html.erb
@@ -320,6 +329,8 @@ class PeopleController < ApplicationController
     Person.list_option_names.each do |name|
       options[name] = params[name] unless params[name].blank?
     end
+    # set to active by default if no checkboxes provided
+    options[:search_person_status] = ["Active"] if params[:search_person_status].blank?
     options
   end
 
