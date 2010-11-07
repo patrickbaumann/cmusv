@@ -23,6 +23,10 @@ class PeopleController < ApplicationController
 #          @people = Person.find(:all, :conditions => ['is_active = ?', true],  :order => "first_name ASC, last_name ASC")
 #    end
 
+    if not params["commit"].nil?
+      @advanced = true
+    end
+
     @list_options = load_list_options
     @people = Person.filter(@list_options).find(:all)
 
