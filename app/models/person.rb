@@ -40,7 +40,7 @@ class Person < ActiveRecord::Base
       # We populate some reasonable defaults, but this can be overridden in the database
       self.human_name = self.first_name + " " + self.last_name if self.human_name.nil?
       self.email = self.first_name.gsub(" ", "")  + "." + self.last_name.gsub(" ", "") + "@sv.cmu.edu" if self.email.nil?
-    end 
+    end
 
   def emailed_recently
     return false if self.effort_log_warning_email.nil?
@@ -310,7 +310,7 @@ class Person < ActiveRecord::Base
          values << true
        end
        if(person_type.include? "Everyone Else")
-         conditions << "(is_student = ? AND is_faculty = ?)"
+         conditions << "(is_student = ? AND is_teacher = ?)"
          values << false
          values << false
        end

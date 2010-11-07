@@ -282,11 +282,11 @@ ActiveRecord::Schema.define(:version => 20100930025344) do
     t.string   "graduation_year"
     t.string   "masters_program"
     t.string   "masters_track"
-    t.boolean  "is_part_time"
-    t.boolean  "is_teacher"
-    t.boolean  "is_adobe_connect_host"
+    t.boolean  "is_part_time",                               :default => false
+    t.boolean  "is_teacher",                                 :default => false
+    t.boolean  "is_adobe_connect_host",                      :default => false
     t.datetime "effort_log_warning_email"
-    t.boolean  "is_active"
+    t.boolean  "is_active",                                  :default => true
     t.string   "legal_first_name"
     t.string   "organization_name"
     t.string   "title"
@@ -310,7 +310,7 @@ ActiveRecord::Schema.define(:version => 20100930025344) do
     t.string   "telephone4"
     t.string   "telephone4_label"
     t.integer  "updated_by_user_id",        :limit => 8
-    t.boolean  "is_alumnus"
+    t.boolean  "is_alumnus",                              :default => false
     t.string   "pronunciation"
     t.datetime "google_created"
     t.datetime "twiki_created"
