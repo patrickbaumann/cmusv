@@ -89,5 +89,13 @@ class Course < ActiveRecord::Base
   def self.remind_about_effort_course_list
     return Course.find(:all, :conditions => ['remind_about_effort = true and year = ? and semester = ?', Date.today.cwyear, ApplicationController.current_semester()] )
   end
+
+  def self.years_for_course(course_name)
+    return Course.find_all_by_name(course_name, :select => 'distinct year')
+  end
+
+  def self.semesters_for_course_and_year(course_name, course_year)
+    Course.find(:all, :conditions => ["name = ? and year = ?", course_name, course_year], :select => 'distinct semester')
+  end
   
 end

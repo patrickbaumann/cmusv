@@ -38,6 +38,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :course_numbers
   map.current_semester '/courses/current_semester', :controller => 'courses', :action => 'current_semester'
   map.next_semester '/courses/next_semester', :controller => 'courses', :action => 'next_semester'
+  map.years_for_course '/courses/years_for_course', :controller => 'courses', :action => 'years_for_course'
+  map.semesters_for_course_and_year '/courses/semesters_for_course_and_year', :controller => 'courses', :action => 'semesters_for_course_and_year'
   map.resources :pages, :collection => { :reposition => :post }
   map.resources :course_navigations
   map.resources :courses, :has_many => :teams

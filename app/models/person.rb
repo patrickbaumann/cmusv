@@ -209,4 +209,95 @@ class Person < ActiveRecord::Base
 #     end
 #   end
 
+   named_scope :search_organization, lambda{ |query|
+      q = "%#{query.downcase}%"
+      { :conditions => ['lower(organization_name) LIKE ?', q] } }
+
+   named_scope :search_local_near_remote, lambda{ |selections|
+      { :conditions => ['local_near_remote IN (?)', [*selections]] } }
+
+   named_scope :search_is_part_time, lambda{ |selections|
+      { :conditions => ['is_part_time IN (?)', [*selections]] } }
+
+   named_scope :search_location, lambda{ |query|
+      queries = query.split(/[\s,;]/)
+      queries = queries.map{|q| "%#{q.downcase}%"}
+
+      conditions = queries.map{|q|
+        c = "lower(work_city) LIKE '" + q + "' OR "
+        c += "lower(work_state) LIKE '" + q + "' OR "
+        c += "lower(work_country) LIKE '" + q + "'"
+      }.join(" OR ")
+
+      { :conditions => conditions } }
+
+   named_scope :search_course_name, lambda{ |course_name|
+     @people = []
+
+     @courses = Course.find_all_by_name(course_name)
+     for @course in @courses
+       for @team in @course.teams
+         for @person in @team.people
+           @people << @person.id
+         end
+       end
+     end
+
+     @people.uniq!
+     
+     { :conditions => ['id IN (?)', [*@people]] } }
+
+   named_scope :search_course_year, lambda{ |course_year|
+     @people = []
+
+     @courses = Course.find_all_by_year(course_year)
+     for @course in @courses
+       for @team in @course.teams
+         for @person in @team.people
+           @people << @person.id
+         end
+       end
+     end
+
+     @people.uniq!
+
+     { :conditions => ['id IN (?)', [*@people]] } }
+
+   named_scope :search_course_semester, lambda{ |course_semester|
+     @people = []
+
+     @courses = Course.find_all_by_semester(course_semester)
+     for @course in @courses
+       for @team in @course.teams
+         for @person in @team.people
+           @people << @person.id
+         end
+       end
+     end
+
+     @people.uniq!
+
+     { :conditions => ['id IN (?)', [*@people]] } }
+
+  # http://clearcove.ca/blog/2008/12/recipe-restful-search-for-rails/
+  # applies list options to retrieve matching records from database
+  def self.filter(list_options)
+    raise(ArgumentError, "Expected Hash, got #{list_options.inspect}") \
+        unless list_options.is_a?(Hash)
+    # compose all filters on AR Collection Proxy
+    ar_proxy = Person
+    list_options.each do |key, value|
+      next unless self.list_option_names.include?(key) # only consider list options
+      next if value.blank? # ignore blank list options
+      ar_proxy = ar_proxy.send(key, value) # compose this option
+    end
+    ar_proxy # return the ActiveRecord proxy object
+  end
+
+   # http://clearcove.ca/blog/2008/12/recipe-restful-search-for-rails/
+  # returns array of valid list option names
+  def self.list_option_names
+    self.scopes.map{|s| s.first} - [:named_scope_that_is_not_a_list_option]
+  end
+
 end

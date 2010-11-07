@@ -8,6 +8,11 @@ quentin:
   last_name:                 quentin
   human_name:                Mr. quentin
   image_uri:                 images/mascot.jpg
+  local_near_remote:         Local
+  is_part_time:              t
+  work_city:                 Albuquerque
+  work_state:                New Mexico
+  work_country:              United States
 
 aaron:
   id:                        2
@@ -18,7 +23,12 @@ aaron:
   last_name:                 aaron
   human_name:                Mr. aaron
   image_uri:                 images/mascot.jpg
-
+  organization_name:         Electronic Arts
+  local_near_remote:         Remote
+  is_part_time:              f
+  work_city:                 Mexico City
+  work_state:                Mexico
+  work_country:              Mexico
 
 old_password_holder:
   id:                        3
@@ -29,6 +39,7 @@ old_password_holder:
   last_name:                 User
   human_name:                Old User
   image_uri:                 images/mascot.jpg
+  is_part_time:              t
 
 admin_andy:
   login:  andy
@@ -46,6 +57,7 @@ admin_andy:
   persistence_token: 6cde0674657a8a313ce952df979de2830309aa4c11ca65805dd00bfdc65dbcc2f5e36718660a1d2e68c1a08c276d996763985d2f06fd3d076eb7bc4d97b1e317
 
 student_sam:
+  id: 4
   login:  sam
   email:  at33@andrew.cmu.edu
   is_student: true
@@ -60,6 +72,8 @@ student_sam:
   password_salt: <%= salt = Authlogic::Random.hex_token %>
   crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("benrocks" + salt) %>
   persistence_token: 6cde0674657a8a313ce952df979de2830309aa4c11ca65805dd00bfdc65dbcc2f5e36718660a1d2e68c1a08c276d996763985d2f06fd3d076eb7bc4d97b1e317
+  local_near_remote: Near
+  is_part_time: f
 
 faculty_frank:
   login:  frank

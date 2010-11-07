@@ -122,6 +122,20 @@ class CoursesController < ApplicationController
     end
   end
 
+  def years_for_course
+    @years = Course.years_for_course(params[:search_course_name]).map{|c| {:Text => c.year.to_s, :Value => c.year.to_s}}
+    respond_to do |format|
+      format.json { render :json => @years}
+    end
+  end
+
+  def semesters_for_course_and_year
+#    @semesters = Course.where(:name => params[:course_name], :year => params[:course_year], :select => 'distinct semester').map{|c| c.semester}
+    @semesters = Course.semesters_for_course_and_year(params[:search_course_name], params[:search_course_year]).map{|c| {:Text => c.semester.to_s, :Value => c.semester.to_s}}
+    respond_to do |format|
+      format.json { render :json => @semesters}
+    end
+  end
 
   private
   def index_core

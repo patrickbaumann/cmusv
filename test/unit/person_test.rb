@@ -75,9 +75,80 @@ class PersonTest < ActiveSupport::TestCase
                    :last_name => "Carnegie",
                  :email => email_address)
     assert normal_user.save()
-    
+
     google_user = normal_user.create_google_email("just4now")
     assert google_user.is_a?(String)
+  end
+
+  def test_filter_organization
+    people = Person.filter({:search_organization => "Electronic Arts"}).find(:all)
+
+    assert_not_nil people
+    assert_equal 1, people.count
+    assert_equal 2, people[0].id
+  end
+
+  def test_filter_local_near_remote
+    people = Person.filter({:search_local_near_remote => ["Local", "Remote"]}).find(:all)
+
+    assert_not_nil people
+    assert_equal 2, people.count
+    assert_equal 1, people[0].id
+    assert_equal 2, people[1].id
+  end
+
+  def test_filter_is_part_time
+    people = Person.filter({:search_is_part_time => ["t"]}).find(:all)
+
+    assert_not_nil people
+    assert_equal 2, people.count
+    assert_equal 1, people[0].id
+    assert_equal 3, people[1].id
+  end
+
+  def test_filter_location
+    people = Person.filter({:search_location => "Mexico"}).find(:all)
+    assert_not_nil people
+    assert_equal 2, people.count
+    assert_equal 1, people[0].id
+    assert_equal 2, people[1].id
+
+    people = Person.filter({:search_location => "Albuquerque"}).find(:all)
+    assert_not_nil people
+    assert_equal 1, people.count
+    assert_equal 1, people[0].id
+
+    people = Person.filter({:search_location => "United"}).find(:all)
+    assert_not_nil people
+    assert_equal 1, people.count
+    assert_equal 1, people[0].id
+
+    people = Person.filter({:search_location => "California"}).find(:all)
+    assert_equal 0, people.count
+  end
+
+  def test_filter_course_name
+    people = Person.filter({:search_course_name => "Metrics for Software Engineers"}).find(:all)
+    assert_equal 0, people.count
+
+    people = Person.filter({:search_course_name => "Foundations of Software Engineering"}).find(:all)
+    assert_equal 4, people.count
+  end
+
+  def test_filter_course_year
+    people = Person.filter({:search_course_year => "2009"}).find(:all)
+    assert_equal 0, people.count
+
+    people = Person.filter({:search_course_year => "2008"}).find(:all)
+    assert_equal 4, people.count
+  end
+
+  def test_filter_course_semester
+    people = Person.filter({:search_course_semester => "Fall"}).find(:all)
+    assert_equal 0, people.count
+
+    people = Person.filter({:search_course_semester => "Spring"}).find(:all)
+    assert_equal 4, people.count
   end
 
 end

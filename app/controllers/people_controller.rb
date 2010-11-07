@@ -13,16 +13,32 @@ class PeopleController < ApplicationController
   # GET /people
   # GET /people.xml
   def index
-    if params[:search]
-      if development?
-        @people = Person.find(:all, :conditions => ['human_name LIKE ?', "%#{params[:search]}%"])
-      else
-        @people = Person.find(:all, :conditions => ['human_name ILIKE ?', "%#{params[:search]}%"])
-      end
-    else
-          @people = Person.find(:all, :conditions => ['is_active = ?', true],  :order => "first_name ASC, last_name ASC")
-    end
+#    if params[:search]
+#      if development?
+#        @people = Person.find(:all, :conditions => ['human_name LIKE ?', "%#{params[:search]}%"])
+#      else
+#        @people = Person.find(:all, :conditions => ['human_name ILIKE ?', "%#{params[:search]}%"])
+#      end
+#    else
+#          @people = Person.find(:all, :conditions => ['is_active = ?', true],  :order => "first_name ASC, last_name ASC")
+#    end
 
+    @list_options = load_list_options
+    @people = Person.filter(@list_options).find(:all)
+
+    @course_options = ['-- Pick a course --'] | Course.find(:all, :select => 'distinct name').map {|c| c.name}
+    @year_options = []
+    @semester_options = []
+
+    course_name = params[:search_course_name]
+    if !course_name.nil?
+      @year_options = ['-- Pick a year --'] | Course.years_for_course(course_name).map {|c| c.year.to_s}
+
+      course_year = params[:search_course_year]
+      if !course_year.nil?
+        @semester_options = ['-- Pick a semester --'] | Course.semesters_for_course_and_year(course_name, course_year).map {|c| c.semester}
+      end
+    end
     
 #    respond_to do |format|
 ##      format.html # index.html.erb
@@ -292,6 +308,19 @@ class PeopleController < ApplicationController
 
     (@teams_map, @teams_students_map) = current_user.faculty_teams_map(person_id)
     a = 10
+  end
+
+  private
+
+  # http://clearcove.ca/blog/2008/12/recipe-restful-search-for-rails/
+  def load_list_options
+    # define default list options here. They will be used if none are given
+    options = {:sorted_by => 'most_recent'}
+    # find relevant query parameters and override list options
+    Person.list_option_names.each do |name|
+      options[name] = params[name] unless params[name].blank?
+    end
+    options
   end
 
 end

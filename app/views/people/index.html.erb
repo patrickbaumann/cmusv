@@ -1,5 +1,26 @@
 <% content_for :title, 'People' %>
 
+<% content_for :cascadingDropDown do %>
+  <%= javascript_include_tag 'jquery.cascadingDropDown'%>
+<script type="text/javascript">
+  $(document).ready(function ()
+  {
+    $("#search_course_year").CascadingDropDown("#search_course_name", '/courses/years_for_course',
+    {
+        promptText: '-- Pick a year --'
+    });
+
+    $("#search_course_semester").CascadingDropDown("#search_course_year", '/courses/semesters_for_course_and_year',
+    {
+        promptText: '-- Pick a semester --',
+        postData: function() {
+          return { search_course_name: $("#search_course_name").val(), search_course_year: $("#search_course_year").val() };
+        }
+    });
+  })
+</script>
+<% end %>
+
 <% content_for :tablesorter do %>
   <%= javascript_include_tag 'tablesorter' %>
   <%= javascript_include_tag 'tablesorter_filter' %>
@@ -12,14 +33,14 @@ $(document).ready(function()
          $('#filterBoxOne').removeAttr("disabled");
          $('#filterBoxOne').focus();
         }
-        $("#people_table").tablesorter({widgets: ['zebra'],         
+        /*$("#people_table").tablesorter({widgets: ['zebra'],
                                         headers: {2: {sorter: false}  },
                                         sortList: [[0,0], [1,0]]})
             .tablesorterFilter({ filterContainer: $("#filterBoxOne"),
                 filterClearContainer: $("#filterClearOne"),
                 filterColumns: [0, 1, 3, 4, 5],
                 filterCaseSensitive: false
-            });        
+            }); */
 
         //scroll the message box to the top offset of browser's scrool bar
         $(window).scroll(function()
@@ -77,8 +98,21 @@ function updateImage(uri,label)
 
 <h1>Listing people</h1>
 <div class="right_link" ><%= link_to 'See phone book', :action=>'phone_book' %><br/><%= link_to 'See photo book', :action=>'photo_book' %></div>
-<div style="float:none"><%= render :partial => "tablesorter_filter_box" %><label>Show Students</label><input type="checkbox" id="student_checkbox" onchange="toggleStudents()" value="1" checked="checked" />
-  <label>Show Staff</label><input type="checkbox" id="staff_checkbox" onchange="toggleStaff()" value="1" checked="checked" />
+
+<div style="float:none">
+  <% form_tag(people_path, :method => :get) do %>
+    Search by organization: <%= text_field_tag('search_organization', @list_options[:search_organization]) %><br />
+    Local: <%= check_box_tag 'search_local_near_remote[]', 'Local', check_checkbox(@list_options[:search_local_near_remote], 'Local') %>
+    Remote: <%= check_box_tag 'search_local_near_remote[]', 'Remote', check_checkbox(@list_options[:search_local_near_remote], 'Remote') %>
+    Near: <%= check_box_tag 'search_local_near_remote[]', 'Near', check_checkbox(@list_options[:search_local_near_remote], 'Near') %><br />
+    Part-time: <%= check_box_tag 'search_is_part_time[]', 't', check_checkbox(@list_options[:search_is_part_time], 't') %>
+    Full-time: <%= check_box_tag 'search_is_part_time[]', 'f', check_checkbox(@list_options[:search_is_part_time], 'f') %><br />
+    Location: <%= text_field_tag('search_location', @list_options[:search_location]) %><br />
+    Course: <%= select_tag(:search_course_name, options_for_select(@course_options, @list_options[:search_course_name])) %>
+    Year: <%= select_tag(:search_course_year, options_for_select(@year_options, @list_options[:search_course_year])) %>
+    Semester: <%= select_tag(:search_course_semester, options_for_select(@semester_options, @list_options[:search_course_semester])) %><br />
+    <%= submit_tag "Update list" %>
+  <% end %>
 </div>
 
 <div id="image_box">
@@ -107,6 +141,15 @@ function updateImage(uri,label)
         <% if person.is_adobe_connect_host %><%= image_tag("/images/connect.gif", :width=>"16", :height=>"16", :alt=>"Adobe Connect Host", :title=>"I am Adobe Connect Host") %><% end %>
         <% if current_user.is_staff? || current_user.is_admin? %>
         <%= link_to image_tag("/images/my_teams2.gif", :width=>"16", :height=>"16", :alt=>"My Teams", :title=>"My Teams"), my_teams_path(person.id) %>
+        <% end %>
+        <% if person.image_uri == '/images/mascot.jpg' %>
+        <%= image_tag("/images/mascot.jpg", :width=>"16", :height=>"16")  %>
+        <% end %>
+        <% if !(person.tigris.nil? || person.tigris.empty?) %>
+        <%= image_tag("/images/tigris.png", :width=>"16", :height=>"16")  %>
+        <% end %>
+        <% if person.graduation_year == Time.now.year.to_s %>
+        <%= image_tag("/images/cap.png", :width=>"16", :height=>"16")  %>
         <% end %>
     </td>
     <td><%=h person.graduation_year %></td>
