@@ -60,7 +60,8 @@
 Skype: <%=h @person.skype %><br />
 Tigris: <%=h @person.tigris %><br />
 Personal email: <%=h @person.personal_email %><br />
-TWiki Page: <%= twiki_user_link(@person.twiki_name, @person.twiki_name) %>    
+TWiki Page: <%= twiki_user_link(@person.twiki_name, @person.twiki_name) %><br />
+<%= link_to 'Teams', {:action => 'my_teams', :id => @person} %>
 
     <%= sanitize @person.user_text, :tags => %w(table tr td p br span img a h1 h2 h3 ul ol li), :attributes => %w(id class style) %>
 
