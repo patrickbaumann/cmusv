@@ -7,5 +7,12 @@ def display_location(person)
 
 end
 
+def image_path(person)
+  if (person.profile_pic_file_name.nil?)
+    return person.image_uri
+  else
+    return person.profile_pic.url
+  end
+end
 
 end

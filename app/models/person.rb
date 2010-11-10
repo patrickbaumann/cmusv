@@ -32,15 +32,22 @@ class Person < ActiveRecord::Base
   validates_uniqueness_of   :login,    :case_sensitive => false, :allow_nil => true
   validates_uniqueness_of   :webiso_account,    :case_sensitive => false, :allow_nil => true
 
-    def before_validation
-      self.webiso_account = Time.now.to_f.to_s if self.webiso_account.blank?
-    end
+  has_attached_file :profile_pic,
+    :storage => :s3,
+    :s3_credentials => "#{RAILS_ROOT}/config/amazon_s3.yml",
+    :path => "people/:id/:filename",
+    #/:version",
+    :keep_old_files => false
 
-    def before_save 
-      # We populate some reasonable defaults, but this can be overridden in the database
-      self.human_name = self.first_name + " " + self.last_name if self.human_name.nil?
-      self.email = self.first_name.gsub(" ", "")  + "." + self.last_name.gsub(" ", "") + "@sv.cmu.edu" if self.email.nil?
-    end 
+  def before_validation
+    self.webiso_account = Time.now.to_f.to_s if self.webiso_account.blank?
+  end
+
+  def before_save
+    # We populate some reasonable defaults, but this can be overridden in the database
+    self.human_name = self.first_name + " " + self.last_name if self.human_name.nil?
+    self.email = self.first_name.gsub(" ", "")  + "." + self.last_name.gsub(" ", "") + "@sv.cmu.edu" if self.email.nil?
+  end
 
   def emailed_recently
     return false if self.effort_log_warning_email.nil?

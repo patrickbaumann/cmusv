@@ -100,7 +100,7 @@ function updateImage(uri,label)
 <tbody>
 <% for person in @people %>
 
-<tr class="tablesorter <%if person.is_student %>student<% end %> <% if person.is_staff %>staff<%end%>"  onmouseover="updateImage('<%= image_path(person.image_uri) %>','<%=person.human_name%>')">
+<tr class="tablesorter <%if person.is_student %>student<% end %> <% if person.is_staff %>staff<%end%>"  onmouseover="updateImage('<%= image_path(person) %>','<%=person.human_name%>')">
     <td><%= twiki_user_link(person.twiki_name, person.first_name) %></td>
     <td><%= twiki_user_link(person.twiki_name, person.last_name) %></td>    
     <td><a href='http://info.sv.cmu.edu/twiki/bin/view/Main/<%= person.twiki_name %>' target='_top'><%= image_tag('/images/twiki.gif', :width=>'16', :height=>'16', :border=>"0", :alt=>"My TWiki page", :title=>"My TWiki page") %></a>

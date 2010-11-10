@@ -80,4 +80,13 @@ class PersonTest < ActiveSupport::TestCase
     assert google_user.is_a?(String)
   end
 
+  def test_save_profile_pic
+    profile_pic_file_name = "test.jpg"
+    normal_user = Person.new(:first_name => "Scotty",
+                             :last_name => "Dog",
+                             :email => "scotty.dog@andrew.cmu.edu",
+                             :profile_pic => profile_pic_file_name)
+    assert normal_user.save()
+  end
+
 end
